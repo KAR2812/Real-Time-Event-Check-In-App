@@ -1,145 +1,85 @@
 # Real-Time Event Check-In App
 
-A full-stack real-time event check-in platform built with React Native (Expo) for the frontend and Node.js + GraphQL + Prisma + Socket.io for the backend. The app allows users to view events, check in, and see live attendee updates using WebSockets.
+A modern, real-time event check-in application built using **React Native (Expo)** on the frontend and **Node.js + GraphQL + Prisma + Socket.io** on the backend. This project demonstrates a strong understanding of full-stack development, real-time communication, and clean architectural practices — ideal for collaborative product environments.
 
-✅ Built with TypeScript, Zustand, TanStack Query, Prisma, and PostgreSQL — combining real-time tech and type-safe APIs.
+---
 
-📸 Demo
+## ✨ Overview
 
+The application allows users to:
 
-🚀 Features
-🔐 Mock login with static token
+* View a list of upcoming events
+* Log in using a simple token
+* Join any event instantly
+* See real-time updates of attendees via WebSockets
 
-📅 View list of upcoming events
+It serves as a functional prototype of a live event engagement tool — like those used in hackathons, college fests, open mics, and tech meetups.
 
-👥 Join an event with one tap
+---
 
-🌐 Real-time attendee updates using WebSockets
+## 🔧 Tech Stack
 
-⚡️ GraphQL API with Prisma PostgreSQL backend
+| Layer    | Technology                                                           |
+| -------- | -------------------------------------------------------------------- |
+| Language | TypeScript                                                           |
+| Backend  | Node.js, GraphQL (Apollo), Prisma ORM, Socket.io                     |
+| Database | PostgreSQL                                                           |
+| Frontend | React Native (Expo), Zustand (state), TanStack Query (data fetching) |
 
-📦 State managed via Zustand + TanStack Query
+---
 
-💬 Socket.io-based live user join notifications
+## 📁 Folder Structure
 
-🛠️ Tech Stack
-Layer	Tech
-Language	TypeScript
-Backend	Node.js, GraphQL (Apollo Server), Prisma, Socket.io
-Database	PostgreSQL
-Frontend	React Native (Expo), Zustand, TanStack Query
-Protocols	GraphQL (API), Socket.io (WebSocket real-time communication)
-
-🧱 Folder Structure
-bash
-Copy
-Edit
+```
 RealTimeCheckInApp_Full/
 ├── backend/
 │   ├── src/
-│   │   ├── index.ts           # Entry point
-│   │   ├── schema.ts          # GraphQL schema
-│   │   ├── resolvers.ts       # GraphQL resolvers
-│   │   └── prisma/            # Prisma schema and migrations
-│   ├── package.json
-│   └── tsconfig.json
-├── frontend/
-│   └── my-app/
-│       ├── App.tsx            # Root app file with Navigation
-│       ├── screens/
-│       │   ├── LoginScreen.tsx
-│       │   └── EventsScreen.tsx
-│       ├── state/
-│       │   └── useStore.ts    # Zustand store
-│       └── utils/
-│           └── graphql.ts     # TanStack Query client setup
-🧑‍💻 Installation & Setup
-🔙 Backend
-Clone the repo:
+│   │   ├── index.ts          # Main server entry (Apollo + Socket.io)
+│   │   ├── schema.ts         # GraphQL schema definitions
+│   │   ├── resolvers.ts      # GraphQL resolvers
+│   │   └── prisma/           # Prisma schema + migrations
+│   └── package.json
+├── frontend/my-app/
+│   ├── App.tsx               # Navigation setup
+│   ├── screens/
+│   │   ├── LoginScreen.tsx   # Mock login screen
+│   │   └── EventsScreen.tsx  # Event list and live attendance
+│   ├── state/useStore.ts     # Zustand global store
+│   └── utils/graphql.ts      # TanStack Query config
+```
 
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/RealTimeCheckInApp_Full.git
-cd RealTimeCheckInApp_Full/backend
-Install dependencies:
+---
 
-bash
-Copy
-Edit
-npm install
-Setup PostgreSQL DB:
+## 🤝 Mock Authentication
 
-Ensure PostgreSQL is running.
+This project uses static token-based login for simplicity:
 
-Create a .env file with your database URL:
+* You can enter **any token** on the login screen.
+* The token is emitted to the server on login and used to track users in events.
 
-env
-Copy
-Edit
-DATABASE_URL="postgresql://user:password@localhost:5432/realtime_checkin"
-Migrate the DB:
+---
 
-bash
-Copy
-Edit
-npx prisma migrate dev --name init
-Run the server:
+## 🚀 Features
 
-bash
-Copy
-Edit
-node --loader ts-node/esm src/index.ts
-Server will be live at: http://localhost:4000/graphql
+* ✔️ **Login Screen** (mocked with token)
+* ✔️ **Event List** fetched from GraphQL (TanStack Query)
+* ✔️ **Event Join** button
+* ✔️ **Real-time Updates** of attendees via Socket.io
+* ✔️ **Global State** handled by Zustand
 
-📱 Frontend
-Go to frontend:
+---
 
-bash
-Copy
-Edit
-cd ../frontend/my-app
-Install dependencies:
+## 💡 How Real-Time Works
 
-bash
-Copy
-Edit
-npm install
-Run Expo project:
+* When a user joins an event, the client emits a `joinEvent` via Socket.io.
+* The backend broadcasts this join to all connected clients.
+* Attendee lists update instantly across devices without refresh.
 
-bash
-Copy
-Edit
-npx expo start
-Scan the QR with Expo Go app on your phone.
+---
 
-🔑 Example Credentials (Mocked)
-You can enter any token on the login screen. This is a mock login for demonstration.
+## 📄 Prisma Schema
 
-The token is used to simulate user sessions when emitting Socket.io events.
-
-🔁 Real-time with WebSocket (Socket.io)
-When a user joins an event, all connected clients receive a live update with the new attendee.
-
-Socket connection established from React Native frontend on login.
-
-Backend listens for 'joinEvent' and broadcasts the attendee list.
-
-🧠 State Management
-Zustand
-Used to store the authToken, current user, and event state globally.
-
-Example: useStore((state) => state.token)
-
-TanStack Query
-Used to fetch the list of events and attendees.
-
-Example: useQuery(['events'], fetchEvents)
-
-📜 Prisma Schema
-ts
-Copy
-Edit
+```ts
 model User {
   id       String   @id @default(cuid())
   name     String
@@ -154,27 +94,77 @@ model Event {
   startTime DateTime
   attendees User[]   @relation("UserEvents")
 }
-✅ Assignment Checklist
-Requirement	Status
-Well-structured frontend & backend	✅ Done
-GraphQL API with Prisma	✅ Done
-Real-time updates using Socket.io	✅ Done
-TanStack Query used	✅ Done
-Zustand used	✅ Done
-TypeScript used everywhere	✅ Done
-Login screen (mocked)	✅ Done
-Events page + Join event	✅ Done
-Real-time attendee updates	✅ Done
-Clean README with setup instructions	✅ Done
+```
 
-💡 Possible Improvements
-These features were considered optional but can be added:
+---
 
-👤 Show avatars or initials of attendees
+## 📝 Installation & Setup
 
-🔁 Leave event functionality
+### 👉 Backend
 
-📊 Show live participant count
+1. Go to backend directory:
 
-🧼 Add further UI polish (animations, responsive layout)
+   ```bash
+   cd backend
+   ```
+2. Install dependencies:
 
+   ```bash
+   npm install
+   ```
+3. Setup `.env` with PostgreSQL:
+
+   ```env
+   DATABASE_URL="postgresql://user:password@localhost:5432/realtime_checkin"
+   ```
+4. Run Prisma migrations:
+
+   ```bash
+   npx prisma migrate dev --name init
+   ```
+5. Start the server:
+
+   ```bash
+   node --loader ts-node/esm src/index.ts
+   ```
+
+> Server will be running on `http://localhost:4000/graphql`
+
+---
+
+### 📱 Frontend
+
+1. Go to frontend directory:
+
+   ```bash
+   cd frontend/my-app
+   ```
+2. Install Expo and deps:
+
+   ```bash
+   npm install
+   ```
+3. Start the app:
+
+   ```bash
+   npx expo start
+   ```
+4. Scan QR using **Expo Go** on your phone.
+
+---
+
+## 💼 Deliverables Checklist
+
+| Task                                     | Status |
+| ---------------------------------------- | ------ |
+| TypeScript used across codebase          | ✅      |
+| Prisma + PostgreSQL database integration | ✅      |
+| GraphQL Queries + Mutation               | ✅      |
+| Mock Login + Token-based session         | ✅      |
+| Zustand for global auth/join state       | ✅      |
+| TanStack Query for data fetching         | ✅      |
+| Real-time join updates via WebSocket     | ✅      |
+| Clean file structure & modularity        | ✅      |
+| Complete README with setup instructions  | ✅      |
+
+---
